@@ -1,0 +1,34 @@
+CC = gcc -g
+LIBS = -lfl
+LEX = flex -I 
+CFLAGS = -DYYDEBUG=1
+
+all:  h4_c  h4_w h1_c
+
+h4_c: lex1.yy.c 
+	${CC} -o h4_c lex1.yy.c ${LIBS}
+
+lex1.yy.c: h4_c.l
+	${LEX} -s -o lex1.yy.c h4_c.l
+
+h4_w: lex2.yy.c 
+	${CC} -o h4_w lex2.yy.c ${LIBS}
+
+lex2.yy.c: h4_w.l
+	${LEX} -o lex2.yy.c h4_w.l
+
+
+h1_c: lex3.yy.c 
+	${CC} -o h1_c lex3.yy.c ${LIBS}
+
+lex3.yy.c: h1_c.l
+	${LEX} -olex3.yy.c h1_c.l
+	
+
+clean: 
+	rm lex1.yy.c
+	rm lex2.yy.c
+	rm lex3.yy.c
+	rm h4_c 
+	rm h4_w
+	rm h1_c

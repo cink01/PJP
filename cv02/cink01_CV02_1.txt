@@ -1,0 +1,6 @@
+1. cat test1_1.txt | grep '^[a-Z][0-9]$'
+2. cat test1_1.txt | grep '[a-Z0-9]'
+3. cat test1_1.txt | egrep ^'[a-z]{7,8}$'
+4. cat test1_1.txt | egrep ^'[a-Z]*$'
+5. cat test1_1.txt | egrep '^(ab|ba)[c-z0-9]*(ab|ba)$'
+6. cat test1_1.txt | egrep '^[0-9]+$'

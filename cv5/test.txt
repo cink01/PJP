@@ -1,0 +1,5 @@
+printf("Quotation mark: \" and other \
+string: "); printf("Other string");
+""
+printf("Quotation mark: \" and other string: "); printf("Other string");
+

@@ -1,0 +1,13 @@
+gcc -o [nazev serveru]
+
+
+https://www.pslib.cz/milan.kerslager/%C5%98%C3%ADzen%C3%AD_p%C5%99ekladu_(make_a_soubor_Makefile)
+
+Makefile - konstatny, knihovny  
+
+make ___
+
+make 	All
+		Clear
+
+./nazev spusteni souboru

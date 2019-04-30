@@ -1,0 +1,5 @@
+printf("Quotation mark: \" and other string: "); printf("Other string");
+"first" qwerty "second" ytrewq "third"
+asdfgh qwerty "new line
+in comment"
+
