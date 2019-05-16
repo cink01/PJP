@@ -1,0 +1,9 @@
+y := a*(x+64)/(x-c);
+x := a+b*a/b+8/(s+t*j);
+print x+4;
+
+repeat x
+{
+  x:=x-1;
+  print x;
+}

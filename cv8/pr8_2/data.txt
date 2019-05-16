@@ -1,0 +1,7 @@
+i=6*7;
+i--;
+a=8;
+i=i+a;
+print (i);
+print (sqrt(i)+8);
+ 

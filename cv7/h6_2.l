@@ -3,7 +3,8 @@
 %}
 
 %%
-[0-9]+ { return NUMBER; }
+[0-9]+ { yylval.num = strtol(yytext, NULL, 10); return NUMBER; }
+[a-Z]+ { yylval.id = new std::string(yytext);return ID;}
 
 [ \t]	;		/* ignore white space */
 \n	return 0;	/* logical EOF */
