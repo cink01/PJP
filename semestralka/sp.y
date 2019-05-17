@@ -24,66 +24,66 @@ int labelcount = 0; // Number of labels
 PROG: PROGRAM ID STREDNIK BLOCK TECKA {
         if(t==1){
           printf("Reducing by rule #01\n");
+          }
           if(v==1){
             printf("Reducing by rule #01, line #%i \t(PROGRAM)\n", pocetradku);
             makequad(HALT,-1,-1,-1);
           }
         }
-      }
      ;
 
 BLOCK:	token_BEGIN LIST token_END {
         if(t==1){
           printf("Reducing by rule #02\n");
+          }
           if(v==1){
             printf("Reducing by rule #02, line #%i \t(BEGIN statement_list END)\n", pocetradku);
           }
         }
-      }
      ;
 
 LIST:  STMT {
         if(t==1){
           printf("Reducing by rule #03\n");
+          }
           if(v==1){
             printf("Reducing by rule #03, line #%i \t(STATEMENT)\n", pocetradku);
           }
         }
-      }
     | STMT STREDNIK LIST {
         if(t==1){
           printf("Reducing by rule #04\n");
+          }
           if(v==1){
             printf("Reducing by rule #04, line #%i \t(STATEMENT_LIST)\n", pocetradku);
           }
         }
-      }
-     ;
+    ;
 
 STMT:  BLOCK {
         if(t==1){
           printf("Reducing by rule #05\n");
+          }
           if(v==1){
             printf("Reducing by rule #05, line #%i \t(BLOCK)\n", pocetradku);
           }
         }
-      }
     | token_IF EXPR token_THEN STMT {
         if(t==1){
           printf("Reducing by rule #06\n");
+          }
           if(v==1){
             printf("Reducing by rule #06, line #%i \t(IF expression THEN statement)\n", pocetradku);
           }
-        }
         makequad(JZ, $2,-1,$$);
       }
     | ID token_ASSIGN EXPR {
         if(t==1){
           printf("Reducing by rule #07\n");
+          }
           if(v==1){
             printf("Reducing by rule #07, line #%i \t(ASSIGNMENT)\n", pocetradku);
           }
-        }
         makequad(MOV, $3, -1, $1);
       }
     | error{d=1;}
@@ -93,10 +93,10 @@ STMT:  BLOCK {
 EXPR: EXPR '+' EXPR {
         $$=gettemp(); 
         if(t==1){
-          printf("Reducing by rule #08\n");
-          if(v==1){
-            printf("Reducing by rule #08, line #%i \t(PLUS)\n", pocetradku);
-          }
+        	printf("Reducing by rule #08\n");
+        }
+        if(v==1){
+        	printf("Reducing by rule #08, line #%i \t(PLUS)\n", pocetradku);
         }
         makequad(ADD, $1, $3, $$); 
      }
@@ -104,28 +104,28 @@ EXPR: EXPR '+' EXPR {
         $$=gettemp(); 
         if(t==1){
           printf("Reducing by rule #09\n");
+          }
           if(v==1){
             printf("Reducing by rule #09, line #%i \t(AND)\n", pocetradku);
           }
-        }
         makequad(ADD, $1, $3, $$); 
      }
      | ID {
         if(t==1){
           printf("Reducing by rule #10\n");
+          }
           if(v==1){
             printf("Reducing by rule #10, line #%i \t(NAME)\n", pocetradku);
           }
-        }
      }
      | NUM{
         if(t==1){
           printf("Reducing by rule #11\n");
+          }
           if(v==1){
             printf("Reducing by rule #11, line #%i \t(INTEGER)\n", pocetradku);
           }
         }
-     }			
      ;
 
 
@@ -213,30 +213,33 @@ int getlabel(void)
 void list_quads(void)
 {
   int i;
+  int j=0;
   printf ("\nIntermediate code:\n");
   printf ("Quadruples\t\t TAC\n");
   for ( i = 0; i < quadcount; i++){ /* List quadruple & interpret it */
-    printf ("(%s, %2d, %2d, %2d)\t ", taccodes[quad[i].op], quad[i].o1, quad[i].o2, quad[i].o3);
+    printf ("%i: (%s, %2d, %2d, %2d)\t ",j, taccodes[quad[i].op], quad[i].o1, quad[i].o2, quad[i].o3);
     switch (quad[i].op)
     {
-      case ADD:
- 	printf ("%s := %s + %s\n", tabZnaku[quad[i].o3], tabZnaku[quad[i].o1], tabZnaku[quad[i].o2]);
-	break;
       case MOV:
- 	printf ("%s := %s * %s\n", tabZnaku[quad[i].o3], tabZnaku[quad[i].o1], tabZnaku[quad[i].o2]);
-	break;
-      case AND:
- 	printf ("%s := %s / %s\n", tabZnaku[quad[i].o3], tabZnaku[quad[i].o1], tabZnaku[quad[i].o2]);
-	break;
-      case HALT:
-	printf("%s := %s\n", tabZnaku[quad[i].o3], tabZnaku[quad[i].o1]);
+ 	printf ("%i: (%s, %s, NULL, %s)\n",j,tabZnaku[quad[i].op], tabZnaku[quad[i].o1], tabZnaku[quad[i].o3]);
 	break;
       case JZ:
-        printf("if %s is zero, jump to %s\n", tabZnaku[quad[i].o1], tabZnaku[quad[i].o2]);
+        printf("%i: (JZ, %s, NULL, %s)\n",j, tabZnaku[quad[i].o1], tabZnaku[quad[i].o3]);
+	break;
+
+      case ADD:
+ 	printf ("%i: (ADD, %s ,%s, %s)\n",j, tabZnaku[quad[i].o1], tabZnaku[quad[i].o2], tabZnaku[quad[i].o3]);
+	break;
+      case AND:
+ 	printf ("%i: (%s, %s, %s, %s)\n",j,tabZnaku[quad[i].op], tabZnaku[quad[i].o1], tabZnaku[quad[i].o2], tabZnaku[quad[i].o3]);
+	break;
+
+      case HALT:
+	printf("%i: HALT(NULL,NULL,NULL)",j);
 	break;
       default:
-	printf("Not a valid TAC code!\n");
-    }
+	printf("%i: Not a valid TAC code!\n",j);
+    }j++;
   }
 }
 
