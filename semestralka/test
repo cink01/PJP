@@ -1,0 +1,9 @@
+program test;
+begin
+first:=0;
+second:=20;
+begin
+ if first then
+ third:=15
+end
+end.
