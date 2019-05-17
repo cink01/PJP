@@ -24,6 +24,7 @@ int pocetradku=1;
 [0-9]+ yylval = symlook(yytext);return (NUM);
 
 [ \t] ; 
+^";".*[\n] ;
 \n pocetradku++;
 . return yytext[0];
 

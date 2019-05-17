@@ -27,8 +27,8 @@ PROG: PROGRAM ID STREDNIK BLOCK TECKA {
           }
           if(v==1){
             printf("Reducing by rule #01, line #%i \t(PROGRAM)\n", pocetradku);
-            makequad(HALT,-1,-1,-1);
           }
+          makequad(HALT,-1,-1,-1);
         }
      ;
 
@@ -161,13 +161,13 @@ void Param(char argc, char** argv)
       else if(!strcmp(argv[1], "-h"))
       {
       	h=1;
-        printf("\t*****\tNápověda\t*****\n\n");
-        printf("Pro spusteni zadejte ./sp (jedna z možností) < (soubor)\n\n");
+        printf("\n\t*****Nápověda*****\n\n");
+        printf("Pro spusteni zadejte jedním ze stylu:\n ./sp (jedna z možností) < (soubor)\n ./sp (jedna z možností) a po povrzení[ENTER] zadat daný kód a potvrdit stiknutim [CTRL+D]\n");
         printf("Možnosti:\n");
-        printf("-t\t\tZákladná trasování - Vypíše pouze sekvenčně řazený seznam aktuálně aplikovaných pravidel.(Reducing by rule #1)\n");
-        printf("-v\t\tÚplné trasování - Rozšiřuje možnosti volby –t o výpis čísla aktuálního řádku a úplnou textovou reprezentaci použitého pravidla (Reducing by rule #10, line #8 (NAME))\n");
-        printf("-d\t\tSyntaktická analýza - Provede se pouze syntaktická analýza. (Syntax OK)\n");
-        printf("-h\t\t\tNápověda - Vypíše tuto nápovědu. \n\n \t*****\t--------\t***** \n ");
+        printf("-t\tZákladná trasování: Vypíše pouze sekvenčně řazený seznam aktuálně aplikovaných pravidel.(Reducing by rule #1)\n");
+        printf("-v\tÚplné trasování - Rozšiřuje možnosti volby –t o výpis čísla aktuálního řádku a úplnou textovou reprezentaci použitého pravidla (Reducing by rule #10, line #8 (NAME))\n");
+        printf("-d\tSyntaktická analýza: Provede se pouze syntaktická analýza. (Syntax OK)\n");
+        printf("-h\tNápověda: Vypíše tuto nápovědu. \n\n\n ");
       }
   }
 }
@@ -218,10 +218,17 @@ void list_quads(void)
   printf ("Quadruples\t\t TAC\n");
   for ( i = 0; i < quadcount; i++){ /* List quadruple & interpret it */
     printf ("%i: (%s, %2d, %2d, %2d)\t ",j, taccodes[quad[i].op], quad[i].o1, quad[i].o2, quad[i].o3);
+    if(taccodes[quad[i].op]=="MOV" && taccodes[quad[i+1].op]=="JZ")
+    {
+      printf ("%i: (%s, %s, NULL, %s)\n",j,taccodes[quad[i+1].op], tabZnaku[quad[i+1].o1], tabZnaku[quad[i+1].o3]);
+      printf ("%i: (%s, %s, NULL, %s)\n",j,taccodes[quad[i].op], tabZnaku[quad[i].o1], tabZnaku[quad[i].o3]);
+      i=i+2;
+      return;
+    }
     switch (quad[i].op)
     {
       case MOV:
- 	printf ("%i: (%s, %s, NULL, %s)\n",j,tabZnaku[quad[i].op], tabZnaku[quad[i].o1], tabZnaku[quad[i].o3]);
+ 	printf ("%i: (%s, %s, NULL, %s)\n",j,taccodes[quad[i].op], tabZnaku[quad[i].o1], tabZnaku[quad[i].o3]);
 	break;
       case JZ:
         printf("%i: (JZ, %s, NULL, %s)\n",j, tabZnaku[quad[i].o1], tabZnaku[quad[i].o3]);
@@ -231,11 +238,11 @@ void list_quads(void)
  	printf ("%i: (ADD, %s ,%s, %s)\n",j, tabZnaku[quad[i].o1], tabZnaku[quad[i].o2], tabZnaku[quad[i].o3]);
 	break;
       case AND:
- 	printf ("%i: (%s, %s, %s, %s)\n",j,tabZnaku[quad[i].op], tabZnaku[quad[i].o1], tabZnaku[quad[i].o2], tabZnaku[quad[i].o3]);
+ 	printf ("%i: (%s, %s, %s, %s)\n",j,taccodes[quad[i].op], tabZnaku[quad[i].o1], tabZnaku[quad[i].o2], tabZnaku[quad[i].o3]);
 	break;
 
       case HALT:
-	printf("%i: HALT(NULL,NULL,NULL)",j);
+	printf("%i: (HALT, NULL, NULL, NULL)",j);
 	break;
       default:
 	printf("%i: Not a valid TAC code!\n",j);
