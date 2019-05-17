@@ -10,8 +10,7 @@ AND,
 HALT,
 } tac_operace;
 
-/* Function Prototypes */
-
+//funkce
 void yyerror(char *);
 int yylex(void);
 void makequad(tac_operace, int, int, int);
@@ -21,22 +20,22 @@ void list_quads(void);
 void list_table(void);
 int symlook(char *);
 
-/* Definitions */
+//proměnné
+char tabZnaku[64][9]; //tabulka znaku
+extern int pocetsymbolu; //pocet symbolu v tabulce
+extern int quadcount; // pocet čtveřic
+extern int tempcount; // počet dočasných položek
+extern int labelcount; // počet labelu
+extern int pocetradku; // pocet radku
 
-char tabZnaku[64][9]; /* Symbol table */
-extern int pocetsymbolu; /* Number of symbols in symbol table */
-extern int quadcount; /* Number of quadruples*/
-extern int tempcount; /* Number of temporary variables */
-extern int labelcount; /* Number of labels */
-extern int pocetradku;
+#define MAXQUADS 32 //velikost pole čtveřic
 
-#define MAXQUADS 32 /* Size of quad array */
-
-struct {   /* Array of quadruples */
-  int op; /* Operator */
-  int o1;  /* 1st operand */
-  int o2;  /* 2nd operand */
-  int o3;  /* Result */
+//pole čtveřic
+struct {   
+  int op; //jedna z možností z TAC operací
+  int o1;  //operand 1
+  int o2;  //operand 2
+  int o3;  //výsledek
 } quad[MAXQUADS];
 
 #endif

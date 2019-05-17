@@ -24,8 +24,8 @@ int pocetradku=1;
 [0-9]+ yylval = symlook(yytext);return (NUM);
 
 [ \t] ; 
-^";".*[\n] ;
-\n pocetradku++;
+^";".*[\n] ; //ošetčení komentáře
+\n pocetradku++;//počítání řádků
 . return yytext[0];
 
 %%

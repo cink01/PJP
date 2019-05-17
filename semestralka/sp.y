@@ -1,7 +1,7 @@
 %{
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
+#include <stdlib.h>
 #include "sp.h"
 
 int t = 0;
@@ -13,6 +13,8 @@ char taccodes[][5]={"MOV", "JZ", "ADD", "AND", "HALT"};
 int quadcount = 0; // Number of quadruples
 int tempcount = 0; // Number of temporary variables 
 int labelcount = 0; // Number of labels 
+void yyerror (char *mesg);
+
 %}
 
 %token PROGRAM STREDNIK TECKA token_BEGIN token_END token_IF token_THEN token_ASSIGN token_AND
@@ -75,7 +77,7 @@ STMT:  BLOCK {
           if(v==1){
             printf("Reducing by rule #06, line #%i \t(IF expression THEN statement)\n", pocetradku);
           }
-        makequad(JZ, $2,-1,$$);
+        makequad(JZ, $2,-1,$4);
       }
     | ID token_ASSIGN EXPR {
         if(t==1){
@@ -108,7 +110,7 @@ EXPR: EXPR '+' EXPR {
           if(v==1){
             printf("Reducing by rule #09, line #%i \t(AND)\n", pocetradku);
           }
-        makequad(ADD, $1, $3, $$); 
+        makequad(AND, $1, $3, $$); 
      }
      | ID {
         if(t==1){
