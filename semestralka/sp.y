@@ -10,7 +10,7 @@ int v = 0;//úplné trasování
 int d = 0;//syntaktická analýza
 int h = 0;//nápověda
 
-char taccodes[][5]={"MOV", "JZ", "ADD", "AND", "HALT"};
+char taccodes[][5]={"MOV", "JZ", "ADD", "AND", "HALT"};//TAC 
 int quadcount = 0; // Number of quadruples
 int tempcount = 0; // Number of temporary variables 
 int labelcount = 0; // Number of labels 
@@ -18,12 +18,13 @@ void yyerror (char *mesg);//funkce na výpis chybové zprávy
 
 %}
 
+//inicializace tokenu
 %token PROGRAM STREDNIK TECKA token_BEGIN token_END token_IF token_THEN token_ASSIGN token_AND
 %token ID NUM 
 %left '+'
 
 %%
-
+//PROGRAM
 PROG: PROGRAM ID STREDNIK BLOCK TECKA {
         if(t==1){
           printf("Reducing by rule #01\n");
@@ -34,7 +35,7 @@ PROG: PROGRAM ID STREDNIK BLOCK TECKA {
           makequad(HALT,-1,-1,-1);
         }
      ;
-
+//BLOCK
 BLOCK:	token_BEGIN LIST token_END {
         if(t==1){
           printf("Reducing by rule #02\n");
@@ -44,7 +45,7 @@ BLOCK:	token_BEGIN LIST token_END {
           }
         }
      ;
-
+//LIST
 LIST:  STMT {
         if(t==1){
           printf("Reducing by rule #03\n");
@@ -62,7 +63,7 @@ LIST:  STMT {
           }
         }
     ;
-
+//STATEMENT
 STMT:  BLOCK {
         if(t==1){
           printf("Reducing by rule #05\n");
@@ -92,7 +93,7 @@ STMT:  BLOCK {
     | error{d=1;}
     ;
     
-
+//EXPRESSION
 EXPR: EXPR '+' EXPR {
         $$=gettemp(); 
         if(t==1){
@@ -146,9 +147,9 @@ int main(char argc, char** argv)
   return 0;
 }
 
-void Param(char argc, char** argv)
+void Param(char argc, char** argv)//FUNKCE NA ZVOLENI PARAMETRU
 {
-    if(argc >= 2)
+    if(argc >= 2)//když je zadán parametr
     {
       if(!strcmp(argv[1], "-t"))
         t = 1;
@@ -212,13 +213,13 @@ int getlabel(void)
   return pocetsymbolu++;
 }
 
-// Lists intermediate code as quadruples & TAC 
+// Lists intermediate code as quadruples 
 void list_quads(void)
 {
   int i;
   int j=0;
   printf ("\nIntermediate code:\n");
-  printf ("Quadruples\t\t TAC\n");
+  printf ("Quadruples\t\t    \n");
   for ( i = 0; i < quadcount; i++){ /* List quadruple & interpret it */
     printf ("%i: (%s, %2d, %2d, %2d)\t ",j, taccodes[quad[i].op], quad[i].o1, quad[i].o2, quad[i].o3);
    
