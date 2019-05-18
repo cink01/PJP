@@ -4,16 +4,17 @@
 #include <stdlib.h>
 #include "sp.h"
 
-int t = 0;
-int v = 0;
-int d = 0;
-int h = 0;
+//pomocné proměnné oznčené podle možností
+int t = 0;//základní trasování
+int v = 0;//úplné trasování
+int d = 0;//syntaktická analýza
+int h = 0;//nápověda
 
 char taccodes[][5]={"MOV", "JZ", "ADD", "AND", "HALT"};
 int quadcount = 0; // Number of quadruples
 int tempcount = 0; // Number of temporary variables 
 int labelcount = 0; // Number of labels 
-void yyerror (char *mesg);
+void yyerror (char *mesg);//funkce na výpis chybové zprávy
 
 %}
 
