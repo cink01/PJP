@@ -162,8 +162,8 @@ void Param(char argc, char** argv)
       }
       else if(!strcmp(argv[1], "-h"))
       {
-      	h=1;
-        printf("\n\t*****Nápověda*****\n\n");
+      	h=1;//nastavení proměnné pro -h => ukončení programu po zobrazení nápovědy
+        printf("\n\t*******Nápověda programu na překlad jazyka do mezikódu(čtveřic)*******\n\n");
         printf("Pro spusteni zadejte jedním ze stylu:\n ./sp (jedna z možností) < (soubor)\n ./sp (jedna z možností) a po povrzení[ENTER] zadat daný kód a potvrdit stiknutim [CTRL+D]\n");
         printf("Možnosti:\n");
         printf("-t\tZákladná trasování: Vypíše pouze sekvenčně řazený seznam aktuálně aplikovaných pravidel.(Reducing by rule #1)\n");
@@ -205,13 +205,13 @@ int gettemp(void)
 int getlabel(void)
 {
   char str[6];
-  snprintf(str, 5, "_L%i", labelcount++); /* Assemble its name */
-  str[5] = '\0'; /* Adding the end of the string -mark */
-  strcpy (tabZnaku[pocetsymbolu], str); /* Add to the symbol table */
+  snprintf(str, 5, "_L%i", labelcount++); // Assemble its name 
+  str[5] = '\0'; //Adding the end of the string -mark 
+  strcpy (tabZnaku[pocetsymbolu], str); // Add to the symbol table 
   return pocetsymbolu++;
 }
 
-/* Lists intermediate code as quadruples & TAC */
+// Lists intermediate code as quadruples & TAC 
 void list_quads(void)
 {
   int i;
@@ -220,6 +220,8 @@ void list_quads(void)
   printf ("Quadruples\t\t TAC\n");
   for ( i = 0; i < quadcount; i++){ /* List quadruple & interpret it */
     printf ("%i: (%s, %2d, %2d, %2d)\t ",j, taccodes[quad[i].op], quad[i].o1, quad[i].o2, quad[i].o3);
+   
+    //snaha o prohození pozic JZ a MOV
     if(taccodes[quad[i].op]=="MOV" && taccodes[quad[i+1].op]=="JZ")
     {
       printf ("%i: (%s, %s, NULL, %s)\n",j,taccodes[quad[i+1].op], tabZnaku[quad[i+1].o1], tabZnaku[quad[i+1].o3]);
@@ -227,6 +229,7 @@ void list_quads(void)
       i=i+2;
       return;
     }
+
     switch (quad[i].op)
     {
       case MOV:
