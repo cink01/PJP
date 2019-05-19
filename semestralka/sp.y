@@ -73,7 +73,7 @@ STMT: BLOCK {
           }
         }
     | token_IF EXPR token_THEN STMT { 
-        makequad(JZ, $2,-1,$4);//vytvoření čtveřice JZ
+        makequad(JZ, $2,-1,$$);//vytvoření čtveřice JZ
         if(t==1){
           printf("Reducing by rule #06\n");
           }
