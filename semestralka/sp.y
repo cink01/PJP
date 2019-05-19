@@ -27,6 +27,7 @@ void yyerror (char *mesg);//funkce na výpis chybové zprávy
 //PROGRAM
 PROG: PROGRAM ID STREDNIK BLOCK TECKA { 
         makequad(HALT,-1,-1,-1);//vytvoření čtveřice HALT
+        
         if(t==1){
           printf("Reducing by rule #01\n");
           }
@@ -74,6 +75,7 @@ STMT: BLOCK {
         }
     | token_IF EXPR token_THEN STMT { 
         makequad(JZ, $2,-1,$$);//vytvoření čtveřice JZ
+
         if(t==1){
           printf("Reducing by rule #06\n");
           }
@@ -83,6 +85,7 @@ STMT: BLOCK {
       }
     | ID token_ASSIGN EXPR { 
         makequad(MOV, $3, -1, $1);//vytvoření čtveřice MOV
+
         if(t==1){
           printf("Reducing by rule #07\n");
           }
@@ -95,8 +98,9 @@ STMT: BLOCK {
     
 //EXPRESSION
 EXPR: EXPR '+' EXPR { 
-        makequad(ADD, $1, $3, $$);//vytvoření čtveřice ADD 
         $$=gettemp(); 
+        makequad(ADD, $1, $3, $$);//vytvoření čtveřice ADD 
+
         if(t==1){
         	printf("Reducing by rule #08\n");
         }
@@ -105,8 +109,9 @@ EXPR: EXPR '+' EXPR {
         }
       }
       | EXPR token_AND EXPR {
-        makequad(AND, $1, $3, $$); //vytvoření čtveřice AND
         $$=gettemp(); 
+        makequad(AND, $1, $3, $$); //vytvoření čtveřice AND
+
         if(t==1){
           printf("Reducing by rule #09\n");
           }
