@@ -25,14 +25,14 @@ void yyerror (char *mesg);//funkce na výpis chybové zprávy
 
 %%
 //PROGRAM
-PROG: PROGRAM ID STREDNIK BLOCK TECKA {
+PROG: PROGRAM ID STREDNIK BLOCK TECKA { 
+        makequad(HALT,-1,-1,-1);//vytvoření čtveřice HALT
         if(t==1){
           printf("Reducing by rule #01\n");
           }
           if(v==1){
             printf("Reducing by rule #01, line #%i \t(PROGRAM)\n", pocetradku);
           }
-          makequad(HALT,-1,-1,-1);
         }
      ;
 //BLOCK
@@ -64,7 +64,7 @@ LIST:  STMT {
         }
     ;
 //STATEMENT
-STMT:  BLOCK {
+STMT: BLOCK {
         if(t==1){
           printf("Reducing by rule #05\n");
           }
@@ -72,29 +72,30 @@ STMT:  BLOCK {
             printf("Reducing by rule #05, line #%i \t(BLOCK)\n", pocetradku);
           }
         }
-    | token_IF EXPR token_THEN STMT {
+    | token_IF EXPR token_THEN STMT { 
+        makequad(JZ, $2,-1,$4);//vytvoření čtveřice JZ
         if(t==1){
           printf("Reducing by rule #06\n");
           }
           if(v==1){
             printf("Reducing by rule #06, line #%i \t(IF expression THEN statement)\n", pocetradku);
           }
-        makequad(JZ, $2,-1,$4);
       }
-    | ID token_ASSIGN EXPR {
+    | ID token_ASSIGN EXPR { 
+        makequad(MOV, $3, -1, $1);//vytvoření čtveřice MOV
         if(t==1){
           printf("Reducing by rule #07\n");
           }
           if(v==1){
             printf("Reducing by rule #07, line #%i \t(ASSIGNMENT)\n", pocetradku);
           }
-        makequad(MOV, $3, -1, $1);
       }
     | error{d=1;}
     ;
     
 //EXPRESSION
-EXPR: EXPR '+' EXPR {
+EXPR: EXPR '+' EXPR { 
+        makequad(ADD, $1, $3, $$);//vytvoření čtveřice ADD 
         $$=gettemp(); 
         if(t==1){
         	printf("Reducing by rule #08\n");
@@ -102,9 +103,9 @@ EXPR: EXPR '+' EXPR {
         if(v==1){
         	printf("Reducing by rule #08, line #%i \t(PLUS)\n", pocetradku);
         }
-        makequad(ADD, $1, $3, $$); 
-     }
-     | EXPR token_AND EXPR {
+      }
+      | EXPR token_AND EXPR {
+        makequad(AND, $1, $3, $$); //vytvoření čtveřice AND
         $$=gettemp(); 
         if(t==1){
           printf("Reducing by rule #09\n");
@@ -112,26 +113,24 @@ EXPR: EXPR '+' EXPR {
           if(v==1){
             printf("Reducing by rule #09, line #%i \t(AND)\n", pocetradku);
           }
-        makequad(AND, $1, $3, $$); 
-     }
-     | ID {
+      }
+      | ID {
         if(t==1){
           printf("Reducing by rule #10\n");
           }
           if(v==1){
             printf("Reducing by rule #10, line #%i \t(NAME)\n", pocetradku);
           }
-     }
-     | NUM{
+      }
+      | NUM{
         if(t==1){
           printf("Reducing by rule #11\n");
           }
           if(v==1){
             printf("Reducing by rule #11, line #%i \t(INTEGER)\n", pocetradku);
           }
-        }
-     ;
-
+      }
+      ;
 
 %%
 
@@ -177,7 +176,6 @@ void Param(char argc, char** argv)//FUNKCE NA ZVOLENI PARAMETRU
 }
 
 /* Supporting Functions */
-
 void yyerror(char *mesg)
 {
   printf("%s\n", mesg);
