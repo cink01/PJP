@@ -1,0 +1,16 @@
+; testovaci soubor 1
+program jedna;
+begin
+a:= b;
+a:= neco + 3;
+b:= toneco + 5;
+b:= x;
+c:= 37;
+b:= b and b;
+;komentar uvnitr kodu
+c:= 62 + 99 and 5;
+c:= 1;
+c:= c + c;
+d:= d + d + d and d;
+if x then y:=2
+end.
