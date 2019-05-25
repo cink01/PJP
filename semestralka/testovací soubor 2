@@ -1,0 +1,26 @@
+; testovací soubor 2
+program dvojka;
+begin
+	begin
+		hodn:= a and b
+	end;
+begin
+	hodn:= 1 + 2;
+	gnd:=1;
+	if hodn then crt:=1;
+		begin
+			hodn:=crt
+		end
+end;
+begin
+	begin
+		begin
+			begin
+				begin
+					crt:=250
+				end
+			end
+		end
+	end
+end
+end.

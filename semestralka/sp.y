@@ -4,29 +4,29 @@
 #include <stdlib.h>
 #include "sp.h"
 
-//pomocné proměnné oznčené podle možností
-int t = 0;//základní trasování
-int v = 0;//úplné trasování
-int d = 0;//syntaktická analýza
-int h = 0;//nápověda
+/*pomocné proměnné oznčené podle možností*/
+int t = 0;/*základní trasování*/
+int v = 0;/*úplné trasování*/
+int d = 0;/*syntaktická analýza*/
+int h = 0;/*nápověda*/
 
-char taccodes[][5]={"MOV", "JZ", "ADD", "AND", "HALT"};//TAC 
-int quadcount = 0; // Number of quadruples
-int tempcount = 0; // Number of temporary variables 
-int labelcount = 0; // Number of labels 
-void yyerror (char *mesg);//funkce na výpis chybové zprávy
+char taccodes[][5]={"MOV", "JZ", "ADD", "AND", "HALT"};/*TAC*/
+int quadcount = 0; /* Pocet cveric */
+int tempcount = 0; /* Number of temporary variables */
+int labelcount = 0; /* Number of labels */
+void yyerror (char *mesg);/* funkce na výpis chybové zprávy*/
 
 %}
 
-//inicializace tokenu
+/*inicializace tokenu*/
 %token PROGRAM STREDNIK TECKA token_BEGIN token_END token_IF token_THEN token_ASSIGN token_AND
 %token ID NUM 
 %left '+'
 
 %%
-//PROGRAM
+/*PROGRAM*/
 PROG: PROGRAM ID STREDNIK BLOCK TECKA { 
-        makequad(HALT,-1,-1,-1);//vytvoření čtveřice HALT
+        makequad(HALT,-1,-1,-1);/*vytvoření čtveřice HALT*/
         
         if(t==1){
           printf("Reducing by rule #01\n");
@@ -36,7 +36,7 @@ PROG: PROGRAM ID STREDNIK BLOCK TECKA {
           }
         }
      ;
-//BLOCK
+/*BLOCK*/
 BLOCK:	token_BEGIN LIST token_END {
         if(t==1){
           printf("Reducing by rule #02\n");
@@ -46,7 +46,7 @@ BLOCK:	token_BEGIN LIST token_END {
           }
         }
      ;
-//LIST
+/*LIST*/
 LIST:  STMT {
         if(t==1){
           printf("Reducing by rule #03\n");
@@ -64,7 +64,7 @@ LIST:  STMT {
           }
         }
     ;
-//STATEMENT
+/*STATEMENT*/
 STMT: BLOCK {
         if(t==1){
           printf("Reducing by rule #05\n");
@@ -74,7 +74,7 @@ STMT: BLOCK {
           }
         }
     | token_IF EXPR token_THEN STMT { 
-        makequad(JZ, $2,-1,$$);//vytvoření čtveřice JZ
+        makequad(JZ, $2,-1,$$);/*vytvoření čtveřice JZ*/
 
         if(t==1){
           printf("Reducing by rule #06\n");
@@ -84,7 +84,7 @@ STMT: BLOCK {
           }
       }
     | ID token_ASSIGN EXPR { 
-        makequad(MOV, $3, -1, $1);//vytvoření čtveřice MOV
+        makequad(MOV, $3, -1, $1);/*vytvoření čtveřice MOV*/
 
         if(t==1){
           printf("Reducing by rule #07\n");
@@ -96,10 +96,10 @@ STMT: BLOCK {
     | error{d=1;}
     ;
     
-//EXPRESSION
+/*EXPRESSION*/
 EXPR: EXPR '+' EXPR { 
         $$=gettemp(); 
-        makequad(ADD, $1, $3, $$);//vytvoření čtveřice ADD 
+        makequad(ADD, $1, $3, $$);/*vytvoření čtveřice ADD */
 
         if(t==1){
         	printf("Reducing by rule #08\n");
@@ -110,7 +110,7 @@ EXPR: EXPR '+' EXPR {
       }
       | EXPR token_AND EXPR {
         $$=gettemp(); 
-        makequad(AND, $1, $3, $$); //vytvoření čtveřice AND
+        makequad(AND, $1, $3, $$); /*vytvoření čtveřice AND*/
 
         if(t==1){
           printf("Reducing by rule #09\n");
@@ -146,14 +146,14 @@ int main(char argc, char** argv)
 
   yydebug = 0;
   yyparse(); /* Parse a statement */
-  list_quads(); /* Print generated code */
-  list_table(); /* Print symbol table */
+  list_quads(); /* Vypsani mezikodu */
+  list_table(); /* Vypsani tabulky symbolu */
   return 0;
 }
 
-void Param(char argc, char** argv)//FUNKCE NA ZVOLENI PARAMETRU
+void Param(char argc, char** argv)/*FUNKCE NA ZVOLENI PARAMETRU*/
 {
-    if(argc >= 2)//když je zadán parametr
+    if(argc >= 2)/*když je zadán parametr*/
     {
       if(!strcmp(argv[1], "-t"))
         t = 1;
@@ -168,14 +168,15 @@ void Param(char argc, char** argv)//FUNKCE NA ZVOLENI PARAMETRU
       }
       else if(!strcmp(argv[1], "-h"))
       {
-      	h=1;//nastavení proměnné pro -h => ukončení programu po zobrazení nápovědy
-        printf("\n\t*******Nápověda programu na překlad jazyka do mezikódu(čtveřic)*******\n\n");
+      	h=1;/*nastavení proměnné pro -h => ukončení programu po zobrazení nápovědy*/
+        printf("\n\t*************Nápověda programu na překlad jazyka do mezikódu(čtveřic)*************\n\n");
+        printf("Prace vytvorena jako semestralni prace studentem Tomasem Cinkem v predmetu PJP \n\n")
         printf("Pro spusteni zadejte jedním ze stylu:\n ./sp (jedna z možností) < (soubor)\n ./sp (jedna z možností) a po povrzení[ENTER] zadat daný kód a potvrdit stiknutim [CTRL+D]\n");
         printf("Možnosti:\n");
         printf("-t\tZákladná trasování: Vypíše pouze sekvenčně řazený seznam aktuálně aplikovaných pravidel.(Reducing by rule #1)\n");
         printf("-v\tÚplné trasování - Rozšiřuje možnosti volby –t o výpis čísla aktuálního řádku a úplnou textovou reprezentaci použitého pravidla (Reducing by rule #10, line #8 (NAME))\n");
         printf("-d\tSyntaktická analýza: Provede se pouze syntaktická analýza. (Syntax OK)\n");
-        printf("-h\tNápověda: Vypíše tuto nápovědu. \n\n\n ");
+        printf("-h\tNápověda: Vypíše tuto nápovědu. \n\n**********************************************************************************\n ");
       }
   }
 }
@@ -190,8 +191,8 @@ void yyerror(char *mesg)
 void makequad(tac_operace op, int op1, int op2, int res)
 {
   quad[quadcount].op = op; /* Operator */
-  quad[quadcount].o1 = op1; /* Operands */
-  quad[quadcount].o2 = op2;
+  quad[quadcount].o1 = op1; /* Operand */
+  quad[quadcount].o2 = op2; /* Operand */ 
   quad[quadcount].o3 = res; /* Result */
   quadcount++;
 }
@@ -210,32 +211,22 @@ int gettemp(void)
 int getlabel(void)
 {
   char str[6];
-  snprintf(str, 5, "_L%i", labelcount++); // Assemble its name 
-  str[5] = '\0'; //Adding the end of the string -mark 
-  strcpy (tabZnaku[pocetsymbolu], str); // Add to the symbol table 
+  snprintf(str, 5, "_L%i", labelcount++); /* Assemble its name */
+  str[5] = '\0'; /*Adding the end of the string -mark */
+  strcpy (tabZnaku[pocetsymbolu], str); /* Add to the symbol table */
   return pocetsymbolu++;
 }
 
-// Lists intermediate code as quadruples 
+/* Vypis mezikodu cvteric */ 
 void list_quads(void)
 {
   int i;
   int j=0;
-  printf ("\nIntermediate code:\n");
-  printf ("Quadruples\t\t    \n");
-  for ( i = 0; i < quadcount; i++){ /* List quadruple & interpret it */
+  printf ("\nMezikod:\n");
+  printf ("Ctverice pozice:\tCtverice symboly\n");
+  for ( i = 0; i < quadcount; i++){ /* Vypis ctveric s pozicemi */
     printf ("%i: (%s, %2d, %2d, %2d)\t ",j, taccodes[quad[i].op], quad[i].o1, quad[i].o2, quad[i].o3);
-   
-    //snaha o prohození pozic JZ a MOV
-    if(taccodes[quad[i].op]=="MOV" && taccodes[quad[i+1].op]=="JZ")
-    {
-      printf ("%i: (%s, %s, NULL, %s)\n",j,taccodes[quad[i+1].op], tabZnaku[quad[i+1].o1], tabZnaku[quad[i+1].o3]);
-      printf ("%i: (%s, %s, NULL, %s)\n",j,taccodes[quad[i].op], tabZnaku[quad[i].o1], tabZnaku[quad[i].o3]);
-      i=i+2;
-      return;
-    }
-
-    switch (quad[i].op)
+    switch (quad[i].op) /* Vypis ctveric se symboly */
     {
       case MOV:
  	printf ("%i: (%s, %s, NULL, %s)\n",j,taccodes[quad[i].op], tabZnaku[quad[i].o1], tabZnaku[quad[i].o3]);
@@ -260,7 +251,7 @@ void list_quads(void)
   }
 }
 
-/* Lists symbol table contents */
+/* Vypis tabulky symbolu */
 void list_table (void) 
 {
   int i;

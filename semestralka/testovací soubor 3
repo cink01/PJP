@@ -1,0 +1,23 @@
+; testovací soubor 3
+program trojka;
+begin
+	begin
+		if tri then pet:=7;
+		if pet then seven:=9;
+		if 9 then ilev:=11
+	end;
+begin
+	hodn:= 1 + 2;
+	gnd:=1;
+	if hodn then crt:=1;
+		begin
+			hodn:=crt
+		end
+end;
+begin
+	begin
+		dva := pet and sest + seven;
+		to:= neco and toneco 
+	end
+end
+end.

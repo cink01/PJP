@@ -28,7 +28,7 @@ extern int tempcount; /*počet dočasných položek*/
 extern int labelcount;/* počet labelu*/
 extern int pocetradku;/* pocet radku*/
 
-#define MAXQUADS 32 //velikost pole čtveřic*/
+#define MAXQUADS 32 /*velikost pole čtveřic*/
 
 /*pole čtveřic*/
 struct {   
