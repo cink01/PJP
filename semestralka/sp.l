@@ -21,7 +21,7 @@ int pocetradku=1;
 ":=" return (token_ASSIGN);
 "and" return (token_AND);
 
-[_a-zA-Z][_a-zA-Z0-9]{0,7} yylval = symlook(yytext);return (ID);
+[_a-zA-Z][_a-zA-Z0-9]* yylval = symlook(yytext);return (ID);
 [0-9]+ yylval = symlook(yytext);return (NUM);
 
 [ \t] ; 
