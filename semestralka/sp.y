@@ -170,13 +170,13 @@ void Param(char argc, char** argv)/*FUNKCE NA ZVOLENI PARAMETRU*/
       {
       	h=1;/*nastavení proměnné pro -h => ukončení programu po zobrazení nápovědy*/
         printf("\n\t*************Nápověda programu na překlad jazyka do mezikódu(čtveřic)*************\n\n");
-        printf("Prace vytvorena jako semestralni prace studentem Tomasem Cinkem v predmetu PJP \n\n")
+        printf("\t  Prace vytvorena jako semestralni prace studentem Tomasem Cinkem v predmetu PJP \n\n");
         printf("Pro spusteni zadejte jedním ze stylu:\n ./sp (jedna z možností) < (soubor)\n ./sp (jedna z možností) a po povrzení[ENTER] zadat daný kód a potvrdit stiknutim [CTRL+D]\n");
         printf("Možnosti:\n");
         printf("-t\tZákladná trasování: Vypíše pouze sekvenčně řazený seznam aktuálně aplikovaných pravidel.(Reducing by rule #1)\n");
         printf("-v\tÚplné trasování - Rozšiřuje možnosti volby –t o výpis čísla aktuálního řádku a úplnou textovou reprezentaci použitého pravidla (Reducing by rule #10, line #8 (NAME))\n");
         printf("-d\tSyntaktická analýza: Provede se pouze syntaktická analýza. (Syntax OK)\n");
-        printf("-h\tNápověda: Vypíše tuto nápovědu. \n\n**********************************************************************************\n ");
+        printf("-h\tNápověda: Vypíše tuto nápovědu. \n\n\t**********************************************************************************\n ");
       }
   }
 }
