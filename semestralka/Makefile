@@ -1,14 +1,11 @@
 CC = gcc
-LIBS = -lfl 	# Linux
-LEX = flex	# -l turns  on  maximum  compatibility with the original 
-                # AT&T lex implementation.  Note that this does not 
-                # mean full  compatibility.   Use  of  this
-                # option costs a considerable amount of performance,
-BISON = bison -d 
-CFLAGS = -DYYDEBUG=1 -g -Wall -pedantic
+LIBS = -ll -lm 
+LEX = lex -I	
+BISON = bison -d -t -v 
+CFLAGS = -DYYDEBUG=1 -g 
 
-DEP1=sp.tab.c sp.yy.c
-EXE1=sp.exe
+DEP=sp.tab.c sp.yy.c
+EXE=sp.exe
 
 .SUFFIXES:                    # Delete the default suffixes
 .SUFFIXES: .y .tab.c .l .yy.c # Define our suffix list
@@ -17,12 +14,12 @@ EXE1=sp.exe
 	$(BISON) $<
 
 .l.yy.c:
-	$(LEX) -o$@ $<
+	$(LEX) -o $@ $<
 
-all: $(EXE1) sp.h
+all: $(EXE) 
 
-$(EXE1): $(DEP1) sp.h
-	$(CC) -o $(EXE1) $(DEP1) $(LIBS) $(CFLAGS)
+$(EXE): $(DEP) 
+	$(CC) -o $(EXE) $(DEP) $(LIBS) $(CFLAGS)
 # ---------------------------------------------
 test: test1 test2 test3
 
@@ -38,4 +35,4 @@ help:
 # --------------------------------------------
 clear: clean
 clean: 
-	rm -f *.tab.h core $(DEP1) *.o $(EXE1) *~
+	rm -f *.tab.h core $(DEP) *.o $(EXE) *~
