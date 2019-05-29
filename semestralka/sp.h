@@ -7,7 +7,7 @@ MOV,
 JZ,
 ADD,
 AND,
-HALT,
+HALT
 } tac_operace;
 
 /*funkce*/

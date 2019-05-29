@@ -20,9 +20,8 @@ void yyerror (char *mesg);/* funkce na výpis chybové zprávy*/
 %}
 
 /*inicializace tokenu*/
-%token PROGRAM STREDNIK TECKA token_BEGIN token_END token_IF token_THEN token_ASSIGN token_AND
+%token PROGRAM STREDNIK TECKA token_BEGIN token_END token_IF token_THEN token_ASSIGN token_AND token_ADD
 %token ID NUM 
-%left '+'
 
 %%
 /*PROGRAM*/
@@ -94,11 +93,16 @@ STMT: BLOCK {
             printf("Reducing by rule #07, line #%i \t(ASSIGNMENT)\n", pocetradku);
           }
       }
-    | error{if(d) {d = 1;}}
+    | error{
+        if(d) 
+        {
+          d = 1;
+        }
+      }
     ;
     
 /*EXPRESSION*/
-EXPR: EXPR '+' EXPR { 
+EXPR: EXPR token_ADD EXPR { 
         $$=gettemp(); 
         makequad(ADD, $1, $3, $$);/*vytvoření čtveřice ADD */
 
@@ -140,27 +144,6 @@ EXPR: EXPR '+' EXPR {
 
 %%
 
-int main(char argc, char** argv)
-{
-  Param(argc,argv);
-  if(h==1)return 0;
-  yyparse(); /* Parse a statement */
-
-  if(d == 2) 
-    printf("Syntax OK\n"); 
-  else if (d == 1)
-    printf("Syntaxe spatne\n"); 
-
-  if(pomocna!=1)
-  {
-    yydebug = 0;
-    list_quads(); /* Vypsani mezikodu */
-    list_table(); /* Vypsani tabulky symbolu */
-  }
-
-  return 0;
-}
-
 void Param(char argc, char** argv)/*FUNKCE NA ZVOLENI PARAMETRU*/
 {
     if(argc >= 2)/*když je zadán parametr*/
@@ -175,7 +158,7 @@ void Param(char argc, char** argv)/*FUNKCE NA ZVOLENI PARAMETRU*/
       }
       else if(!strcmp(argv[1], "-h"))
       {
-      	h=1;/*nastavení proměnné pro -h => ukončení programu po zobrazení nápovědy*/
+        h=1;/*nastavení proměnné pro -h => ukončení programu po zobrazení nápovědy*/
         printf("\n\t*************Nápověda programu na překlad jazyka do mezikódu(čtveřic)*************\n\n");
         printf("\t  Prace vytvorena jako semestralni prace studentem Tomasem Cinkem v predmetu PJP \n\n");
         printf("Pro spusteni zadejte jedním ze stylu:\n ./sp (jedna z možností) < (soubor)\n ./sp (jedna z možností) a po povrzení[ENTER] zadat daný kód a potvrdit stiknutim [CTRL+D]\n");
@@ -188,11 +171,33 @@ void Param(char argc, char** argv)/*FUNKCE NA ZVOLENI PARAMETRU*/
   }
 }
 
+int main(char argc, char** argv)
+{
+  Param(argc,argv);
+  
+  if(h==1)return 0;
+  yyparse(); /* Parse a statement */
+
+  if(d == 2) 
+    printf("\nSyntax OK\n"); 
+  else if (d == 1)
+    printf("\nSyntaxe spatne\n"); 
+
+  if(pomocna!=1)
+  {
+   /* yydebug = 0; */
+    list_quads(); /* Vypsani mezikodu */
+    list_table(); /* Vypsani tabulky symbolu */
+  }
+
+  return 0;
+}
+
 /* Supporting Functions */
 void yyerror(char *mesg)
 {
   d=1;
-  printf("%s\n na radku: %s\n", mesg, pocetradku);
+  printf("%s\n na radku: %i\n", mesg, pocetradku);
 }
 
 /* Assembles quadruple */
@@ -263,7 +268,7 @@ void list_quads(void)
 void list_table (void) 
 {
   int i;
-  printf("\nSymbol table:\n"); 
+  printf("\nTabulka symbolu:\n"); 
   for (i = 0; i < pocetsymbolu; i++)
     printf ("%2d: %s\n", i, tabZnaku[i]); 
   printf ("\n");

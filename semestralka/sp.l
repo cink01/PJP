@@ -18,10 +18,12 @@ int pocetradku=1;
 "end" return (token_END);
 "if" return (token_IF);
 "then" return (token_THEN);
+"+" return (token_ADD);
 ":=" return (token_ASSIGN);
 "and" return (token_AND);
 
-[_a-zA-Z][_a-zA-Z0-9]* yylval = symlook(yytext);return (ID);
+
+[a-zA-Z]+[0-9]* yylval = symlook(yytext);return (ID);
 [0-9]+ yylval = symlook(yytext);return (NUM);
 
 [ \t] ; 
