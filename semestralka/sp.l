@@ -1,11 +1,11 @@
 %{
 #include <string.h>
-#include "sp.tab.h"	
+#include "sp.tab.h"
 #include "sp.h"
 #define symbol_l 20
 #define YY_NO_UNPUT
 
-int pocetsymbolu = 0;       
+int pocetsymbolu = 0;
 int pocetradku=1;
 %}
 
@@ -26,9 +26,9 @@ int pocetradku=1;
 [a-zA-Z]+[0-9]* yylval = symlook(yytext);return (ID);
 [0-9]+ yylval = symlook(yytext);return (NUM);
 
-[ \t] ; 
+[ \t] ;
 
-^";".*[\n] ; 
+^";".*[\n] ;
 
 \n pocetradku++;
 . return yytext[0];
