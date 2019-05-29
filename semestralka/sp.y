@@ -7,8 +7,9 @@
 /*pomocné proměnné oznčené podle možností*/
 int t = 0;/*základní trasování*/
 int v = 0;/*úplné trasování*/
-int d = 0;/*syntaktická analýza*/
+int d = 2;/*syntaktická analýza*/
 int h = 0;/*nápověda*/
+int pomocna = 0;
 
 char taccodes[][5]={"MOV", "JZ", "ADD", "AND", "HALT"};/*TAC*/
 int quadcount = 0; /* Pocet cveric */
@@ -93,7 +94,7 @@ STMT: BLOCK {
             printf("Reducing by rule #07, line #%i \t(ASSIGNMENT)\n", pocetradku);
           }
       }
-    | error{d=1;}
+    | error{if(d) {d = 1;}}
     ;
     
 /*EXPRESSION*/
@@ -142,12 +143,21 @@ EXPR: EXPR '+' EXPR {
 int main(char argc, char** argv)
 {
   Param(argc,argv);
-  if(h==1||d==1)return 0;
-
-  yydebug = 0;
+  if(h==1)return 0;
   yyparse(); /* Parse a statement */
-  list_quads(); /* Vypsani mezikodu */
-  list_table(); /* Vypsani tabulky symbolu */
+
+  if(d == 2) 
+    printf("Syntax OK\n"); 
+  else if (d == 1)
+    printf("Syntaxe spatne\n"); 
+
+  if(pomocna!=1)
+  {
+    yydebug = 0;
+    list_quads(); /* Vypsani mezikodu */
+    list_table(); /* Vypsani tabulky symbolu */
+  }
+
   return 0;
 }
 
@@ -161,10 +171,7 @@ void Param(char argc, char** argv)/*FUNKCE NA ZVOLENI PARAMETRU*/
         v = 1;
       else if(!strcmp(argv[1], "-d"))
       {
-          if(d==1)
-            printf("Chyba syntaxe!");
-          else
-            printf("Syntaxe v pořádku");
+        pomocna = 1;
       }
       else if(!strcmp(argv[1], "-h"))
       {
@@ -184,7 +191,8 @@ void Param(char argc, char** argv)/*FUNKCE NA ZVOLENI PARAMETRU*/
 /* Supporting Functions */
 void yyerror(char *mesg)
 {
-  printf("%s\n", mesg);
+  d=1;
+  printf("%s\n na radku: %s\n", mesg, pocetradku);
 }
 
 /* Assembles quadruple */
