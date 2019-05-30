@@ -4,7 +4,8 @@ begin
 	begin
 		if tri then pet:=7;
 		if pet then seven:=9;
-		if 9 then ilev:=11
+		if 9 then ilev:=11;
+		if to then ono:=yo and fo
 	end;
 begin
 	hodn:= 1 + 2;

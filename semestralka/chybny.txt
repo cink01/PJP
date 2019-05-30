@@ -1,0 +1,11 @@
+; testovací soubor 3
+program trojka;
+begin
+	begin
+		if tri then pet:=7;
+neco
+spatne 
+konece
+exit 
+:
+.

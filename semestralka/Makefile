@@ -35,4 +35,4 @@ help:
 # --------------------------------------------
 clear: clean
 clean: 
-	rm -f *.tab.h core $(DEP) *.o $(EXE) *~
+	rm -f *.tab.h core $(DEP) *.output $(EXE) *~
