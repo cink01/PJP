@@ -1,0 +1,23 @@
+int prvni(){}
+int druha(int a, int x){}
+int treti(int a, int b){ int c = a+b; }
+int ctvrta(int a, int b){ int c = a+b-c*d; }
+int pata(){int c = a+(b-c)*d;}
+int sesta(){
+if(3*5 <= x){
+if(a < 10){
+int b = 20;
+}
+else{
+int b = 40;
+}
+}
+else{
+int b = x;
+
+while (a < 10) {
+int a = 100;
+}
+return b;
+}
+}

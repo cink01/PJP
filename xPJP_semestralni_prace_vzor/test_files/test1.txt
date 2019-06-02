@@ -1,0 +1,26 @@
+// komentar
+
+int prvni(int a, int b){int c = a-b;}
+int druha(){
+int treti(){
+if(5*5 <= y){
+if(a > 10){
+int b = 20;
+}
+else{
+int b = 40;
+}
+}
+else{
+int b = y;
+
+while (a < 20) {
+int a = 100;
+}
+return b;
+}
+}
+/*	vice
+	radkovy
+	komentar
+*/
